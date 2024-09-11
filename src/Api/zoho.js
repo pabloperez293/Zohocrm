@@ -1,17 +1,56 @@
-const xlsx = require('xlsx');
+const axios = require('axios');
+const { accessToken, baseUrl } = require('../../config/config');
 
-// Se carga el archivo 
-const workbook = xlsx.readFile('leads.xlsx'); 
-const sheetName = workbook.SheetNames[0]; 
-const worksheet = workbook.Sheets[sheetName];
+// Crear Leads en Zoho CRM
+const createLeads = async (leads) => {
+  try {
+    const response = await axios.post(
+      baseUrl,
+      { data: leads },
+      { headers: { Authorization: `Zoho-oauthtoken ${accessToken}` } }
+    );
+    return response.data;
+  } catch (error) {
+    console.error('Error al crear Leads:', error.response.data);
+  }
+};
 
-// Conversion 
-const leads = xlsx.utils.sheet_to_json(worksheet);
+// Leer Leads desde Zoho CRM
+const getLeads = async () => {
+  try {
+    const response = await axios.get(baseUrl, {
+      headers: { Authorization: `Zoho-oauthtoken ${accessToken}` },
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error al leer Leads:', error.response.data);
+  }
+};
 
-// Filtro los leads 
-const filteredLeads = leads.filter(lead => 
-    lead.FirstName && lead.LastName && lead.Company && lead.Email && lead.LeadSource && 
-    lead.LeadStatus
-  );
+// Actualizar Leads en Zoho CRM
+const updateLeads = async (leadId, data) => {
+  try {
+    const response = await axios.put(
+      `${baseUrl}/${leadId}`,
+      { data },
+      { headers: { Authorization: `Zoho-oauthtoken ${accessToken}` } }
+    );
+    return response.data;
+  } catch (error) {
+    console.error('Error al actualizar Leads:', error.response.data);
+  }
+};
 
-  console.log('Leads filtrados:', filteredLeads);
+// Borrar Leads en Zoho CRM
+const deleteLead = async (leadId) => {
+  try {
+    const response = await axios.delete(`${baseUrl}/${leadId}`, {
+      headers: { Authorization: `Zoho-oauthtoken ${accessToken}` },
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error al borrar Leads:', error.response.data);
+  }
+};
+
+module.exports = { createLeads, getLeads, updateLeads, deleteLead };
