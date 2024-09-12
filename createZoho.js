@@ -1,9 +1,9 @@
 const { loadLeadsFromFile, classifyLeads } = require('./src/services/leadServices');
 const { createLeads } = require('./src/Api/zoho');
 
-// Cargar leads desde el archivo
+// Cargar de leads
 const leads = loadLeadsFromFile();
-// Clasificar los leads
+
 const { completeLeads, incompleteLeads, invalidLeads } = classifyLeads(leads);
 
 // Mostrar los resultados de la clasificación

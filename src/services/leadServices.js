@@ -2,7 +2,7 @@ const xlsx = require('xlsx');
 const { isLeadValid, isLeadIncomplete } = require('../utils/validation');
 const { createLeads, getLeads, updateLeads, deleteLead } = require('../Api/zoho');
 
-// Leer el archivo XLSX
+// Leer el XLSX
 const loadLeadsFromFile = () => {
   const workbook = xlsx.readFile('./data/Leads.xlsx');
   const sheetName = workbook.SheetNames[0];
@@ -10,7 +10,7 @@ const loadLeadsFromFile = () => {
   return xlsx.utils.sheet_to_json(worksheet);
 };
 
-// Clasificar los leads en categorías
+// Clasificacion los leads port categorías
 const classifyLeads = (leads) => {
   const completeLeads = [];
   const incompleteLeads = [];
