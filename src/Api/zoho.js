@@ -11,7 +11,11 @@ const createLeads = async (leads) => {
     );
     return response.data;
   } catch (error) {
-    console.error('Error al crear Leads:', error.response.data);
+    throw{
+      response: {
+        data: error.response ? error.response.data : { message: 'Unknown error' }
+      }
+    }
   }
 };
 
